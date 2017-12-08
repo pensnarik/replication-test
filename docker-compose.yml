@@ -1,0 +1,31 @@
+version: '2'
+
+networks:
+  wal:
+
+services:
+  master:
+    image: wal
+    environment:
+      PG_LOG_MIN_MESSAGES: 'info'
+      PG_LOG_MIN_DURATION_STATEMENT: '0'
+      PG_WAL_LEVEL: 'replica'
+    cpuset: 0,1
+    mem_limit: 512M
+    networks:
+      - wal
+    ports:
+      - '20000:5432'
+
+  standby:
+    image: wal
+    environment:
+      PG_LOG_MIN_MESSAGES: 'info'
+      PG_LOG_MIN_DURATION_STATEMENT: '0'
+      PG_HOT_STANDBY: 'on'
+    cpuset: 0,1
+    mem_limit: 512M
+    networks:
+      - wal
+    ports:
+      - '20100:5432'

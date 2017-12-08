@@ -1,0 +1,9 @@
+#!/bin/sh
+set -e
+
+until psql "$1" -c '\l'; do
+  echo >&2 "Postgres at $1 is unavailable - sleeping"
+  sleep 1
+done
+
+echo >&2 "Postgres at $1 is up - proceeding"
